@@ -1,0 +1,25 @@
+:root {
+    --item-width: 150px; 
+    --item-between: 10px;
+}
+
+.ShopArea{
+    width: 80%;
+    background-color: #aaaaaa;
+    padding: auto;
+    margin: 10px;
+}
+
+.Shop{
+    width: 100%;
+    display: grid;
+    grid-template-columns: var(--item-width) var(--item-width) var(--item-width) var(--item-width);
+    grid-auto-rows: 100px;
+    grid-gap: var(--item-between) var(--item-between);
+    margin: 10px;
+}
+
+.Item{
+    background-color: #DD0031;
+    color: white;
+}
