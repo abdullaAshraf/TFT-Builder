@@ -1,51 +1,62 @@
 import React, { Component } from 'react'
 import './Shop.css'
 import ChampionShop from '../../components/Champion/ChampionShop/ChampionShop'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
-function onlyUnique(value, index, self) { 
+function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
 class Shop extends Component {
     state = {
-        cost : "All",
-        class : "All"
+        tier: "All",
+        class: "All"
     }
-    
+
+    filterByTier = (event) => {
+        this.setState({
+            tier: event.target.options[event.target.selectedIndex].value
+        });
+    }
+
+    filterByClass = (event) => {
+        this.setState({
+            class: event.target.options[event.target.selectedIndex].value
+        });
+    }
+
     render() {
         let champs = [];
-        let costOptions = ["All"];
+        let tierOptions = ["All", 1, 2, 3, 4, 5];
         let classOptions = ["All"];
 
-        this.props.champions.forEach(element => {
-            costOptions.push(element.cost);
-            classOptions.push.apply(classOptions,element.classes);
-            if((this.state.cost === "All" || element.cost == this.state.cost)&&(this.state.class === "All" || element.classes.indexOf(this.state.class) >= 0))
-                champs.push(<ChampionShop key={element.name} onClickHandler={this.props.onClickHandler} {...element}/>);
-        });
-
-        const filterByCost = (event) =>{
-            this.setState({
-                cost: event.target.options[event.target.selectedIndex].value
+        if (this.props.champions.length > 0) {
+            this.props.champions.forEach(element => {
+                classOptions.push.apply(classOptions, element.classes);
+                if ((this.state.tier === "All" || element.tier == this.state.tier) && (this.state.class === "All" || element.classes.indexOf(this.state.class) >= 0))
+                    champs.push(<ChampionShop key={element.name} onClickHandler={this.props.onClickHandler} {...element} />);
             });
+        } else {
+            champs = <Spinner />
         }
-
-        const filterByClass = (event) =>{
-            this.setState({
-                class: event.target.options[event.target.selectedIndex].value
-            });
-        }
+    
 
         return (
-            <div className="ShopArea"> 
-                <select name="tier" onChange={filterByCost}>
-                    {costOptions.filter(onlyUnique).map(item => <option value={item} key={item}>{item}</option>)}
-                </select>
+            <div className="ShopArea">
+                <div className="Select" style={{ 'float': 'left'}}>
+                    <select name="tier" onChange={this.filterByTier}>
+                        {tierOptions.map(item => <option value={item} key={item}>{item}</option>)}
+                    </select>
+                </div>
 
-                <select name="class" onChange={filterByClass}>
-                    {classOptions.filter(onlyUnique).map(item => <option value={item} key={item}>{item}</option>)}
-                </select>
-                
+                <div className="Select">
+                <select name="class" onChange={this.filterByClass}>
+                        {classOptions.filter(onlyUnique).map(item => <option value={item} key={item}>{item}</option>)}
+                    </select>
+                </div>
+
+
+
                 <div className="Shop">
                     {champs}
                 </div>

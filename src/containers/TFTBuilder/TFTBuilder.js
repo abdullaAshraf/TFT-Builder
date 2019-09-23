@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import Aux from '../../hoc/Auxiliary/Aux'
+import Aux from '../../hoc/Auxiliary/Auxilliary'
 import Grid from '../../components/Grid/Grid'
 import Shop from '../Shop/Shop'
-import ChampionData from '../../components/Champion/ChampionData/ChampionData'
 import Modal from '../../components/UI/Modal/Modal'
 import ChampionDetails from '../../components/Champion/ChampionDetails/ChampionDetails'
 import withErrorHandler from '../../hoc/withErrorHandle/withErrorHandle'
@@ -10,9 +9,16 @@ import axios from 'axios'
 
 class TFTBuilder extends Component {
     state = {
-        champions: [new ChampionData("Miss Fortune", 18, ["Hush", "Yuumi"], 1), new ChampionData("Garen", 8, ["Frozen Heart"], 2), new ChampionData("Aatrox", 13, ["Dragon's Claw"], 3)],
-        shopChampions: [new ChampionData("Miss Fortune", 0, [], 1), new ChampionData("Garen", 0, [], 1), new ChampionData("Aatrox", 0, [], 1)],
+        champions: [],
+        shopChampions: [],
         clickedChamp: null
+    }
+
+    componentDidMount() {
+        axios.get('/champion')
+            .then(res => this.setState({ shopChampions: res.data }))
+            .catch(err =>
+                console.log(err))
     }
 
     addChampion = (name) => {
@@ -33,7 +39,7 @@ class TFTBuilder extends Component {
             if (champ2 != null)
                 champ = champ2;
         } else if (emptyCell != null) {
-            champ = new ChampionData(name, emptyCell, [], 1);
+            champ = this.createChampion(name, emptyCell, [], 1);
         }
 
         if (champ != null) {
@@ -59,34 +65,58 @@ class TFTBuilder extends Component {
             }
         });
         if (cnt === 3) {
-            if(items.length > 3)
-                items = items.slice(0,2)
-            return new ChampionData(name, cell, items, level + 1);
+            if (items.length > 3)
+                items = items.slice(0, 2)
+            return this.createChampion(name, cell, items, level + 1);
         }
         return null;
     }
 
-    gridChampClick = (champName) => {
-        //TODO get champ from DataBase
-        let champData = null;
-        this.state.champions.forEach(element => {
-            if(element.name === champName)
-                champData = {...element};
+    createChampion = (name, cell, items, level) => {
+        let champ = null
+        this.state.shopChampions.forEach(champion => {
+            if (champion.name === name) {
+                champ = { ...champion };
+                champ.cell = cell;
+                champ.items = items;
+                champ.level = level;
+                return;
+            }
         });
-        this.setState({clickedChamp:champData});
+        return champ;
+    }
+
+    gridChampClick = (champName) => {
+        let champData = null;
+        this.state.shopChampions.forEach(element => {
+            if (element.name === champName)
+                champData = { ...element };
+        });
+        this.setState({ clickedChamp: champData });
     }
 
     backdropClick = () => {
-        this.setState({clickedChamp:null});
+        this.setState({ clickedChamp: null });
+    }
+
+    swapCells = (cell1, cell2) => {
+        let newChampions = [...this.state.champions ];
+        newChampions.forEach(element => {
+            if (element.cell == cell1)
+                element.cell = cell2;
+            else if (element.cell == cell2)
+                element.cell = cell1;
+        });
+        this.setState({ champions: newChampions });
     }
 
     render() {
         return (
             <Aux>
                 <Modal show={this.state.clickedChamp != null} modalClosed={this.backdropClick}>
-                    <ChampionDetails {...this.state.clickedChamp}/>
+                    <ChampionDetails {...this.state.clickedChamp} />
                 </Modal>
-                <Grid champions={this.state.champions} champClickHandler={this.gridChampClick}/>
+                <Grid champions={this.state.champions} champClickHandler={this.gridChampClick} swapCells={this.swapCells} />
                 <Shop champions={this.state.shopChampions} onClickHandler={this.addChampion} />
                 <div>Synrgies</div>
                 <div>Items</div>
@@ -98,4 +128,4 @@ class TFTBuilder extends Component {
     }
 }
 
-export default withErrorHandler(TFTBuilder,axios);
+export default withErrorHandler(TFTBuilder, axios);

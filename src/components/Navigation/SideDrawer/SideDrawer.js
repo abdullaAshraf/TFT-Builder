@@ -4,7 +4,7 @@ import './SideDrawer.css'
 import Logo from '../../Logo/Logo'
 import NavigationItems from '../../Navigation/NavigationItems/NavigationItems'
 import Backdrop from '../../UI/Backdrop/Backdrop'
-import Aux from '../../../hoc/Auxiliary/Aux'
+import Aux from '../../../hoc/Auxiliary/Auxilliary'
 
 const sidebar = (props) => {
     const attachedClasses = ["SideDrawer",props.show ? "Open" : "Close"];

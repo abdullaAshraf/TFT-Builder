@@ -9,7 +9,7 @@
     --hex-border: calc(var(--hex-margin) / 1.73 /* sqrt(3) */);
     --hex-transition: all .2s ease;
 
-    --color-hex-default: #DD0031;
+    --color-hex-default: #122331;
 }
 
 /* Hexagons */
@@ -25,17 +25,12 @@
     background-color: var(--color-hex-default);
     cursor: pointer;
     display: flex;
-    fill: white;
     height: var(--hex-height);
-    justify-content: center;
     margin: var(--hex-border) 0;
     position: relative;
     transition: var(--hex-transition);
     width: var(--hex-width);
     margin-left: calc(var(--hex-width) / 2 + var(--hex-between) / 2);
-    text-align: center;
-    color: aliceblue;
-    font-size: 12px;
   }
   
   .hexagon::after,

@@ -1,25 +1,122 @@
 :root {
-    --item-width: 150px; 
+    --item-width: 200px; 
     --item-between: 10px;
 }
 
 .ShopArea{
-    width: 80%;
-    background-color: #aaaaaa;
-    padding: auto;
-    margin: 10px;
+    width: 850px;
+    background-color: #3A6F9C;
+    padding: 10px;
+    margin: 20px;
 }
 
 .Shop{
     width: 100%;
     display: grid;
     grid-template-columns: var(--item-width) var(--item-width) var(--item-width) var(--item-width);
-    grid-auto-rows: 100px;
+    grid-auto-rows: 150px;
     grid-gap: var(--item-between) var(--item-between);
     margin: 10px;
 }
 
 .Item{
-    background-color: #DD0031;
+    background-color: #122331;
     color: white;
+    position: relative;
 }
+
+.Item img{
+    width: 100%;
+    height: 100%;
+}
+
+.ImageHolder{
+    position:absolute;  
+    z-index:1;  
+    width: 200px;
+    height: 120px;
+}
+
+.ChampClasses{
+    position:absolute;  
+    z-index:2;  
+    left:10px;
+    top:10px;  
+}
+
+.ChampName{
+    position:absolute;  
+    z-index:2;  
+    left:10px;
+    top:125px;  
+}
+
+.ChampTier{
+    position:absolute;  
+    z-index:2;  
+    left:180px;
+    top:125px;  
+}
+
+.Item ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Reset Select */
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #2c3e50;
+    background-image: none;
+    height: 50px;
+    widows: 100%;
+  }
+  /* Remove IE arrow */
+  select::-ms-expand {
+    display: none;
+  }
+  /* Custom Select */
+  .Select {
+    position: relative;
+    display: flex;
+    width: 40%;
+    height: 3em;
+    line-height: 3;
+    background: #2c3e50;
+    overflow: hidden;
+    border-radius: .25em;
+    margin: 10px;
+  }
+  select {
+    flex: 1;
+    padding: 0 .5em;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  /* Arrow */
+  .Select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #34495e;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+  }
+  /* Transition */
+  .Select:hover::after {
+    color: #f39c12;
+  }
+

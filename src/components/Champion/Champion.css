@@ -1,0 +1,36 @@
+.GridImageHolder{
+    position:absolute;  
+    z-index:1;  
+    width: 90px;
+    height: 105px;
+    top: -22.5px;
+    left: 5px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.GridImageHolder img{
+    height: auto; 
+    width: auto; 
+    max-width: 105px; 
+    max-height: 105px;
+}
+
+.GridChampItems{
+    position:absolute;  
+    z-index:2;  
+    top:-50px;  
+}
+
+.GridChampLevel{
+    z-index:2;  
+    position: absolute;
+    top: -20px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 100%;
+    font-size: 28px;
+    color: yellow;
+    cursor: pointer;
+    -webkit-text-stroke: 1px black;
+}

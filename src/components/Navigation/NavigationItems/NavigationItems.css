@@ -17,7 +17,7 @@
 
 
 .NavigationItems a{
-    color : crimson;
+    color : #122331;
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
@@ -27,7 +27,7 @@
 .NavigationItems a:hover,
 .NavigationItems a:active,
 .NavigationItems a.active {
-    color : darkred;
+    color : #3a6f9c;
 }
 
 @media (min-width: 500px) {
@@ -54,7 +54,7 @@
     .NavigationItems a:hover,
     .NavigationItems a:active,
     .NavigationItems a.active {
-        background-color:  darkred;
+        background-color:  #3a6f9c;
         border-bottom: 4px solid white;
         color : white;
     }
