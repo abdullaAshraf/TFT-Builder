@@ -10,6 +10,9 @@ This app allow the user to test thier new stratgies and match them up aganist ot
 
 The idea of a stratgey game simulator requires many dynamic components and complicated css styles to reflect the game feelings, using React allows for managing dynamic components in a clean and easy way
 
+Demo for the work done so far:
+https://tft-builder.abdullaashraf.now.sh/
+
 ## Server-side
 The data used in this app comes from a back-end API developed using MongoDB and Node.js Express, since the game is always getting patches of balances and improvements using an external database allow for fast and easy data modifications, check more about the server-side app here : https://github.com/abdullaAshraf/TFT-Builder-Server 
 
