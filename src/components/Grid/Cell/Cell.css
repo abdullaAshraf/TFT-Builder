@@ -18,7 +18,7 @@
     grid-template-columns: var(--hex-width) var(--hex-width) var(--hex-width) var(--hex-width) var(--hex-width) var(--hex-width) var(--hex-width);
     grid-auto-rows: calc(var(--hex-width) - 28.87px/2);
     grid-gap: var(--hex-between) var(--hex-between);
-    padding: var(--hex-border);
+    padding: var(--hex-border) 0px;
   }
   .hexagon {
     align-items: center;

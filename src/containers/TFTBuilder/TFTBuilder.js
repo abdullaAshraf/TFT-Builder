@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import Aux from '../../hoc/Auxiliary/Auxilliary'
 import Grid from '../../components/Grid/Grid'
 import Shop from '../Shop/Shop'
 import Modal from '../../components/UI/Modal/Modal'
 import ChampionDetails from '../../components/Champion/ChampionDetails/ChampionDetails'
+import SynrgiesArea from '../../components/Synergy/SynergiesArea/SynergiesArea'
+
 import withErrorHandler from '../../hoc/withErrorHandle/withErrorHandle'
 import axios from 'axios'
 
@@ -11,6 +12,7 @@ class TFTBuilder extends Component {
     state = {
         champions: [],
         shopChampions: [],
+        synergies: [],
         clickedChamp: null
     }
 
@@ -19,45 +21,49 @@ class TFTBuilder extends Component {
             .then(res => this.setState({ shopChampions: res.data }))
             .catch(err =>
                 console.log(err))
+
+        axios.get('/synergy')
+            .then(res => this.setState({ synergies: res.data }))
+            .catch(err =>
+                console.log(err))
     }
 
     addChampion = (name) => {
-        let emptyCell = null;
-        let cells = [];
-        this.state.champions.forEach(element => {
-            cells.push(element.cell);
-        });
-        for (let i = 0; i < 21; i++)
-            if (cells.indexOf(i) < 0) {
-                emptyCell = i;
-                break;
+        this.setState(prevState => {
+            let emptyCell = null;
+            let cells = prevState.champions.map(element => element.cell);
+
+            for (let i = 0; i < 21; i++)
+                if (cells.indexOf(i) < 0) {
+                    emptyCell = i;
+                    break;
+                }
+
+            let champ = this.mergeChampions(prevState.champions, name, 1, []);
+            if (champ != null) {
+                let champ2 = this.mergeChampions(prevState.champions, name, 2, [champ.items]);
+                if (champ2 != null)
+                    champ = champ2;
+            } else if (emptyCell != null) {
+                champ = this.createChampion(name, emptyCell, [], 1);
             }
 
-        let champ = this.mergeChampions(name, 1, []);
-        if (champ != null) {
-            let champ2 = this.mergeChampions(name, 2, [champ.items]);
-            if (champ2 != null)
-                champ = champ2;
-        } else if (emptyCell != null) {
-            champ = this.createChampion(name, emptyCell, [], 1);
-        }
-
-        if (champ != null) {
-            let newChampions = [champ];
-            this.state.champions.forEach(element => {
-                if (element.name !== name || element.level >= champ.level)
-                    newChampions.push(element);
-            });
-            this.setState({
-                champions: newChampions
-            });
-        }
+            if (champ != null) {
+                let newChampions = [champ];
+                prevState.champions.forEach(element => {
+                    if (element.name !== champ.name || element.level >= champ.level)
+                        newChampions.push({ ...element })
+                })
+                return { champions: newChampions };
+            }
+            return {};
+        });
     }
 
-    mergeChampions = (name, level, items) => {
+    mergeChampions = (champions, name, level, items) => {
         let cnt = 1;
         let cell = 0;
-        this.state.champions.forEach(element => {
+        champions.forEach(element => {
             if (element.name === name && element.level === level) {
                 cnt++;
                 items.push.apply(items, element.items);
@@ -100,32 +106,65 @@ class TFTBuilder extends Component {
     }
 
     swapCells = (cell1, cell2) => {
-        let newChampions = [...this.state.champions ];
-        newChampions.forEach(element => {
-            if (element.cell == cell1)
-                element.cell = cell2;
-            else if (element.cell == cell2)
-                element.cell = cell1;
+        this.setState(prevState => {
+            let newChampions = prevState.champions.map(element => {
+                if (element.cell == cell1)
+                    element.cell = cell2;
+                else if (element.cell == cell2)
+                    element.cell = cell1;
+                return { ...element }
+            });
+            newChampions = newChampions.filter(element => {
+                return element.cell > -1;
+            });
+            return {
+                champions: newChampions
+            };
         });
-        this.setState({ champions: newChampions });
     }
 
     render() {
+        let champSynergies = {};
+        this.state.champions.forEach(element => {
+            element.classes.forEach(group => {
+                if (typeof champSynergies[group] === 'undefined')
+                    champSynergies[group] = [];
+                champSynergies[group].push(element.name);
+            })
+        });
+
+        let synergies = [];
+        Object.keys(champSynergies).forEach(key => {
+            let synergy = { ...this.state.synergies.find(element => element.name === key) };
+            synergy.count = champSynergies[key].filter(onlyUnique).length;
+            synergies.push(synergy);
+        });
+
         return (
-            <Aux>
+            <div className="row">
                 <Modal show={this.state.clickedChamp != null} modalClosed={this.backdropClick}>
                     <ChampionDetails {...this.state.clickedChamp} />
                 </Modal>
-                <Grid champions={this.state.champions} champClickHandler={this.gridChampClick} swapCells={this.swapCells} />
-                <Shop champions={this.state.shopChampions} onClickHandler={this.addChampion} />
-                <div>Synrgies</div>
-                <div>Items</div>
-                <div>States</div>
-                <div>Matchups</div>
-                <div>Controls</div>
-            </Aux>
+                <div className="col-2">
+                    <SynrgiesArea synergies={synergies}></SynrgiesArea>
+                    <div>Items</div>
+                </div>
+                <div className="col-md-auto">
+                    <Grid champions={this.state.champions} champClickHandler={this.gridChampClick} swapCells={this.swapCells} />
+                    <Shop champions={this.state.shopChampions} onClickHandler={this.addChampion} swapCells={this.swapCells} />
+                    <div>Controls</div>
+                </div>
+                <div className="col">
+                    <div>States</div>
+                    <div>Matchups</div>
+                </div>
+            </div>
         );
     }
 }
 
 export default withErrorHandler(TFTBuilder, axios);
+
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}

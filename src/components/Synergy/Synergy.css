@@ -1,0 +1,19 @@
+.SynergyItem {
+    opacity: 1;
+}
+
+.SynergyGrayed {
+    opacity: 0.4;
+}
+
+.SynergyItem img {
+    float: left;
+    width: 40px;
+    height: auto;
+    margin-top: 10px;
+    display: block;
+}
+
+.SynergyItem h3 {
+    font-size: 20px;
+}
