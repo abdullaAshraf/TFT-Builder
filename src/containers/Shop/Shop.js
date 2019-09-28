@@ -42,6 +42,7 @@ class Shop extends Component {
         let champs = [];
         let tierOptions = ["All", 1, 2, 3, 4, 5];
         let classOptions = ["All"];
+        let shop = <Spinner />
 
         if (this.props.champions.length > 0) {
             this.props.champions.forEach(element => {
@@ -49,9 +50,9 @@ class Shop extends Component {
                 if ((this.state.tier === "All" || element.tier === parseInt(this.state.tier,10)) && (this.state.class === "All" || element.classes.indexOf(this.state.class) >= 0))
                     champs.push(<ChampionShop key={element.name} onClickHandler={this.props.onClickHandler} {...element} />);
             });
-        } else {
-            champs = <Spinner />
-        } 
+            shop = <div className="Shop"> {champs}</div>;
+        }
+
 
         return (
             <div className="ShopArea" onDragOver={this.allowDrop} onDrop={this.drop}>
@@ -66,12 +67,7 @@ class Shop extends Component {
                         {classOptions.filter(onlyUnique).map(item => <option value={item} key={item}>{item}</option>)}
                     </select>
                 </div>
-
-
-
-                <div className="Shop">
-                    {champs}
-                </div>
+                {shop}
             </div>
         );
     }

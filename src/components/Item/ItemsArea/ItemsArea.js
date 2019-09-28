@@ -1,13 +1,15 @@
 import React from 'react';
-import './ItemArea.css';
+import './ItemsArea.css';
 import Item from '../Item'
 
 const itemsArea = (props) => {
+    let mainItems = props.items.filter(item => item.subitems.length == 0);
+
     return (
         <div className="ItemsArea">
-            {props.items.map(item => <Item key={item.name} {...item} />)}
+            {mainItems.map(item => <Item key={item.name} {...item} />)}
         </div>
     );
 }
 
-export default synergiesArea;
+export default itemsArea;

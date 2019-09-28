@@ -1,0 +1,10 @@
+.ItemsArea {
+    width: 100%;
+    margin: 10px 5%;
+    padding: 10px;
+    background-color: #122331;
+    height: auto;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px 10px;
+}

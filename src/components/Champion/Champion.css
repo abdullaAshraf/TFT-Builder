@@ -18,7 +18,15 @@
 .GridChampItems{
     position:absolute;  
     z-index:2;  
-    top:-50px;  
+    top:60px; 
+    left:4px;
+}
+
+
+.GridChampItems img{
+    width : 30px;
+    height: auto;
+    border:2px solid black;
 }
 
 .GridChampLevel{

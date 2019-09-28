@@ -7,10 +7,10 @@ const grid = (props) => {
 
     let cells = [];
     for (let i = 0; i<21; i++)
-        cells.push(<Cell key={"cell_id" + i} num={i} swapCells={props.swapCells}></Cell>);
+        cells.push(<Cell key={"cell_id" + i} num={i} swapCells={props.swapCells} addItem={props.addItem}></Cell>);
     
     props.champions.forEach(element => {
-        cells[element.cell] = <Cell key={"cell_id" + element.cell} num = {element.cell} swapCells={props.swapCells}><Champion champClickHandler={props.champClickHandler} {...element}/></Cell>;
+        cells[element.cell] = <Cell key={"cell_id" + element.cell} num = {element.cell} swapCells={props.swapCells} addItem={props.addItem}><Champion champClickHandler={props.champClickHandler} {...element}/></Cell>;
     });
 
     return (

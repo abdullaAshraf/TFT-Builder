@@ -4,6 +4,7 @@ import Shop from '../Shop/Shop'
 import Modal from '../../components/UI/Modal/Modal'
 import ChampionDetails from '../../components/Champion/ChampionDetails/ChampionDetails'
 import SynrgiesArea from '../../components/Synergy/SynergiesArea/SynergiesArea'
+import ItemsArea from '../../components/Item/ItemsArea/ItemsArea'
 
 import withErrorHandler from '../../hoc/withErrorHandle/withErrorHandle'
 import axios from 'axios'
@@ -13,6 +14,7 @@ class TFTBuilder extends Component {
         champions: [],
         shopChampions: [],
         synergies: [],
+        items: [],
         clickedChamp: null
     }
 
@@ -20,12 +22,17 @@ class TFTBuilder extends Component {
         axios.get('/champion')
             .then(res => this.setState({ shopChampions: res.data }))
             .catch(err =>
-                console.log(err))
+                console.log(err));
 
         axios.get('/synergy')
             .then(res => this.setState({ synergies: res.data }))
             .catch(err =>
-                console.log(err))
+                console.log(err));
+
+        axios.get('/item')
+            .then(res => this.setState({ items: res.data }))
+            .catch(err =>
+                console.log(err));
     }
 
     addChampion = (name) => {
@@ -41,7 +48,7 @@ class TFTBuilder extends Component {
 
             let champ = this.mergeChampions(prevState.champions, name, 1, []);
             if (champ != null) {
-                let champ2 = this.mergeChampions(prevState.champions, name, 2, [champ.items]);
+                let champ2 = this.mergeChampions(prevState.champions, name, 2, champ.items);
                 if (champ2 != null)
                     champ = champ2;
             } else if (emptyCell != null) {
@@ -66,15 +73,12 @@ class TFTBuilder extends Component {
         champions.forEach(element => {
             if (element.name === name && element.level === level) {
                 cnt++;
-                items.push.apply(items, element.items);
+                element.items.forEach(item => items = this.mergeItems(items, item));
                 cell = element.cell;
             }
         });
-        if (cnt === 3) {
-            if (items.length > 3)
-                items = items.slice(0, 2)
+        if (cnt === 3)
             return this.createChampion(name, cell, items, level + 1);
-        }
         return null;
     }
 
@@ -123,6 +127,40 @@ class TFTBuilder extends Component {
         });
     }
 
+    addItem = (cell, item) => {
+        this.setState(prevState => {
+            let newChampions = prevState.champions.map(element => {
+                if (element.cell == cell)
+                    element.items = this.mergeItems(element.items, item);
+                return { ...element }
+            });
+            return {
+                champions: newChampions
+            };
+        });
+    }
+
+
+    mergeItems = (items, newItemName) => {
+        let newItem = this.state.items.filter(item => item.name === newItemName)[0];
+        if (!newItem)
+            newItem = this.state.items.filter(item => item.iconURL === newItemName)[0];
+        if (items.length === 0) {
+            items.push(newItem.iconURL);
+            return items;
+        }
+        let oldItemIcon = items[items.length - 1];
+        let oldItem = this.state.items.filter(item => item.iconURL === oldItemIcon)[0];
+        if (oldItem.subitems.length === 0) {
+            newItem = this.state.items.filter(item => item.subitems.length > 0 && ((item.subitems[0] === newItem.name && item.subitems[1] === oldItem.name) || (item.subitems[1] === newItem.name && item.subitems[0] === oldItem.name)))[0];
+            if (newItem)
+                items.pop();
+        }
+        if (items.length < 3 && newItem)
+            items.push(newItem.iconURL);
+        return items;
+    }
+
     render() {
         let champSynergies = {};
         this.state.champions.forEach(element => {
@@ -146,11 +184,11 @@ class TFTBuilder extends Component {
                     <ChampionDetails {...this.state.clickedChamp} />
                 </Modal>
                 <div className="col-2">
-                    <SynrgiesArea synergies={synergies}></SynrgiesArea>
-                    <div>Items</div>
+                    <SynrgiesArea synergies={synergies} />
+                    <ItemsArea items={this.state.items} />
                 </div>
                 <div className="col-md-auto">
-                    <Grid champions={this.state.champions} champClickHandler={this.gridChampClick} swapCells={this.swapCells} />
+                    <Grid champions={this.state.champions} champClickHandler={this.gridChampClick} swapCells={this.swapCells} addItem={this.addItem} />
                     <Shop champions={this.state.shopChampions} onClickHandler={this.addChampion} swapCells={this.swapCells} />
                     <div>Controls</div>
                 </div>

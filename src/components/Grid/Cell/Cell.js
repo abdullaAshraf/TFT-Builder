@@ -10,8 +10,12 @@ const cell = (props) => {
     const drop = (event) => {
         event.preventDefault();
         var data = event.dataTransfer.getData("text");
-        if (!isNaN(data) && data <= 20 && data >= 0)
-            props.swapCells(props.num, data);
+        if (!isNaN(data)) {
+            if (data <= 20 && data >= 0)
+                props.swapCells(props.num, data);
+        } else {
+            props.addItem(props.num, data);
+        }
     }
 
     return (
