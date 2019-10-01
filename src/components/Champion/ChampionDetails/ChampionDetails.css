@@ -1,0 +1,22 @@
+.ChampionDetails {
+    margin: 10px;
+}
+
+.ChampionDetails p {
+    margin: 0px;
+    color: #122331;
+}
+
+.ChampionDetails img {
+    float : left;
+    width: 40px;
+    margin-right: 10px;
+}
+
+.ChampionDetails .Ability {
+    margin-top: 20px;
+}
+
+.ChampionDetails h4 {
+    font-size: 22px;
+}

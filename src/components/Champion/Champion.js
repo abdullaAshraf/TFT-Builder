@@ -1,5 +1,6 @@
 import React from 'react';
 import './Champion.css'
+import shortid from 'shortid';
 
 const champion = (props) => {
     let stars = '';
@@ -23,7 +24,7 @@ const champion = (props) => {
             </div>
             <div className = 'GridChampLevel'>{stars}</div>
             <div className = 'GridChampItems' style = {{marginLeft:centerItems}}>
-                {props.items.map(itemURL => <img key = {itemURL} src = {itemURL} draggable = {false}/>)}
+                {props.items.map(itemURL => <img key = {shortid.generate()} src = {itemURL} draggable = {false}/>)}
             </div>
         </div>
     );

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import './TFTBuilder.css'
+
 import Grid from '../../components/Grid/Grid'
 import Shop from '../Shop/Shop'
 import Modal from '../../components/UI/Modal/Modal'
@@ -15,7 +17,8 @@ class TFTBuilder extends Component {
         shopChampions: [],
         synergies: [],
         items: [],
-        clickedChamp: null
+        clickedChamp: null,
+        buildId: null
     }
 
     componentDidMount() {
@@ -33,6 +36,10 @@ class TFTBuilder extends Component {
             .then(res => this.setState({ items: res.data }))
             .catch(err =>
                 console.log(err));
+
+        if (this.props.location.build) {
+            this.setState({champions:this.props.location.build});
+        }
     }
 
     addChampion = (name) => {
@@ -52,7 +59,12 @@ class TFTBuilder extends Component {
                 if (champ2 != null)
                     champ = champ2;
             } else if (emptyCell != null) {
-                champ = this.createChampion(name, emptyCell, [], 1);
+                let maxTeamSize = 9;
+                prevState.champions.forEach(element => element.items.forEach(itemURL => {
+                    if (itemURL === prevState.items.filter(item => item.name === "Force of Nature")[0].iconURL) maxTeamSize++;
+                }));
+                if (prevState.champions.length < maxTeamSize)
+                    champ = this.createChampion(name, emptyCell, [], 1);
             }
 
             if (champ != null) {
@@ -161,6 +173,28 @@ class TFTBuilder extends Component {
         return items;
     }
 
+    saveBuild = () => {
+        let build = {
+            champions: this.state.champions,
+            owner: "Me",
+            votes: 0,
+            name: this.refs.buildName.value
+        };
+        axios.post('/build', build)
+            .then(res => {
+                console.log(res)
+                this.props.history.push('/builds');
+            })
+            .catch(err => console.log(err));
+    }
+
+    clearBuild = () => {
+        this.setState({
+            champions: [],
+            clickedChamp: null
+        });
+    }
+
     render() {
         let champSynergies = {};
         this.state.champions.forEach(element => {
@@ -190,11 +224,16 @@ class TFTBuilder extends Component {
                 <div className="col-md-auto">
                     <Grid champions={this.state.champions} champClickHandler={this.gridChampClick} swapCells={this.swapCells} addItem={this.addItem} />
                     <Shop champions={this.state.shopChampions} onClickHandler={this.addChampion} swapCells={this.swapCells} />
-                    <div>Controls</div>
-                </div>
-                <div className="col">
-                    <div>States</div>
-                    <div>Matchups</div>
+                    <div>
+                        <label className="MainInput">
+                            <input type="text" id="buildName" ref="buildName" placeholder="&nbsp;" />
+                            <span className="Label">Build Name</span>
+                            <span className="Border"></span>
+                        </label>
+                        <div><button className="MainButton" onClick={this.saveBuild}>Save</button>
+                            <button className="MainButton" style={{ "marginLeft": "6%" }} onClick={this.clearBuild}>Clear</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

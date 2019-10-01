@@ -1,11 +1,11 @@
 import React from 'react';
-import './NavigationItems.css'
+import './NavigationItems.css';
+import {NavLink} from 'react-router-dom';
 
 const navigationItems = () => (
     <ul className="NavigationItems">
-        <a href="/" className="active">Home</a>
-        <a href="/">Hints</a>
-        <a href="/">Builds</a>
+        <NavLink to="/" exact>Buidler</NavLink>
+        <NavLink to="/Builds">Builds</NavLink>
     </ul>
 );
 

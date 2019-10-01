@@ -1,40 +1,43 @@
 import React from 'react';
+import './ChampionDetails.css';
 
 const championDetails = (props) => {
     if (!props.name)
         return (null)
-    let classes = null;
-    classes = props.classes.map(item => {
-        return <li key={item}>{item}</li>
-    });
 
     let desc = props.ability.desc.split('\n');
     let col1 = [];
     let col2 = [];
     for (let i = 1; i < desc.length; i++) {
         if (i % 2 === 1)
-            col1.push(<p key = {i} style={{ 'margin': '0px'}}>{desc[i]}</p>);
+            col1.push(<p key={i}>{desc[i]}</p>);
         else
-            col2.push(<p key = {i} style={{ 'margin': '0px'}}>{desc[i]}</p>);
+            col2.push(<p key={i}>{desc[i]}</p>);
     }
     return (
-        <div>
+        <div className="ChampionDetails">
             <h1>{props.name}</h1>
-            <ul>
-                {classes}
-            </ul>
-            <p style={{ 'margin': '0px'}}>Health : {props.health.join('/')}</p>
-            <p style={{ 'margin': '0px'}}>Armor : {props.armor}</p>
-            <p style={{ 'margin': '0px'}}>Magic Resist : {props.magicResist}</p>
-            <p style={{ 'margin': '0px'}}>Attack Damage : {props.damage.join('/')}</p>
-            <p style={{ 'margin': '0px'}}>Attack Speed : {props.attackSpeed}</p>
-            <p style={{ 'margin': '0px'}}>Range : {props.range}</p>
-            <div>
+            <h4> {props.classes.join(',')} </h4>
+            <div className="row">
+                <div className="col">
+                    <p>Health : {props.health.join('/')}</p>
+                    <p>Armor : {props.armor}</p>
+                    <p>Magic Resist : {props.magicResist}</p>
+                </div>
+                <div className="col">
+                    <p>Attack Damage : {props.damage.join('/')}</p>
+                    <p>Attack Speed : {props.attackSpeed}</p>
+                    <p>Range : {props.range}</p>
+                </div>
+            </div>
+            <div className="Ability">
                 <img src={props.ability.iconURL} alt={props.ability.name} />
-                <h2>{props.ability.name}</h2>
+                <h3>{props.ability.name}</h3>
                 <p>{desc[0]}</p>
-                <div style={{ 'float': 'left', 'width': '50%'}}>{col1}</div>
-                <div style={{ 'float': 'right', 'width': '50%'}}>{col2}</div>
+                <div className="row">
+                    <div className="col">{col1}</div>
+                    <div className="col">{col2}</div>
+                </div>
             </div>
         </div>
     );

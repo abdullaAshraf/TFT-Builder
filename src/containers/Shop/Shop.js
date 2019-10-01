@@ -63,10 +63,11 @@ class Shop extends Component {
                 </div>
 
                 <div className="Select">
-                <select name="class" onChange={this.filterByClass}>
+                    <select name="class" onChange={this.filterByClass}>
                         {classOptions.filter(onlyUnique).map(item => <option value={item} key={item}>{item}</option>)}
                     </select>
                 </div>
+
                 {shop}
             </div>
         );

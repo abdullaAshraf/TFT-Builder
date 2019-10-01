@@ -4,5 +4,6 @@
     background-color: #122331;
     height: auto;
     min-height: 350px;
+    min-width: 200px;
     color: white;
 }

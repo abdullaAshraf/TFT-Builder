@@ -1,0 +1,101 @@
+.MainButton {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #2C3E50), color-stop(1, #122331));
+	background:-moz-linear-gradient(top, #2C3E50 5%, #122331 100%);
+	background:-webkit-linear-gradient(top, #2C3E50 5%, #122331 100%);
+	background:-o-linear-gradient(top, #2C3E50 5%, #122331 100%);
+	background:-ms-linear-gradient(top, #2C3E50 5%, #122331 100%);
+	background:linear-gradient(to bottom, #2C3E50 5%, #122331 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#2C3E50', endColorstr='#122331',GradientType=0);
+	background-color:#2C3E50;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #000000;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+	padding:13px 59px;
+    text-decoration:none;
+    width: 47%;
+}
+.MainButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #122331), color-stop(1, #2C3E50));
+	background:-moz-linear-gradient(top, #122331 5%, #2C3E50 100%);
+	background:-webkit-linear-gradient(top, #122331 5%, #2C3E50 100%);
+	background:-o-linear-gradient(top, #122331 5%, #2C3E50 100%);
+	background:-ms-linear-gradient(top, #122331 5%, #2C3E50 100%);
+	background:linear-gradient(to bottom, #122331 5%, #2C3E50 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#122331', endColorstr='#2C3E50',GradientType=0);
+	background-color:#122331;
+}
+
+.MainInput{
+    position: relative;
+	margin: auto;
+	width: 100%;
+	max-width: 410px;
+	margin-bottom: 20px;
+}
+
+.MainInput .Label{
+    position: absolute;
+	top: 16px;
+	left: 0;
+	font-size: 16px;
+	color: #9098a9;
+	font-weight: 500;
+	transform-origin: 0 0;
+	transition: all 0.2s ease;
+}
+
+.MainInput .Border{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 2px;
+	width: 100%;
+	background: #07f;
+	transform: scaleX(0);
+	transform-origin: 0 0;
+	transition: all 0.15s ease;
+}
+
+.MainInput input{
+	-webkit-appearance: none;
+	width: 100%;
+	border: 0;
+	font-family: inherit;
+	padding: 12px 0;
+	height: 48px;
+	font-size: 16px;
+	font-weight: 500;
+	border-bottom: 2px solid #c8ccd4;
+	background: none;
+	border-radius: 0;
+	color: #223254;
+	transition: all 0.15s ease;
+}
+
+.MainInput input:hover {
+	background: rgba(34,50,84,0.03);
+}
+.MainInput input:not(:placeholder-shown) + span {
+	color: #5a667f;
+	transform: translateY(-26px) scale(0.75);
+}
+.MainInput input:focus {
+	background: none;
+	outline: none;
+}
+.MainInput input:focus + span {
+	color: #07f;
+	transform: translateY(-26px) scale(0.75);
+}
+.MainInput input:focus + span + .border {
+	transform: scaleX(1);
+}
+  
+    

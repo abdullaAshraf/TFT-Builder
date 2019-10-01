@@ -1,0 +1,21 @@
+.Build {
+    margin: 20px;
+    background-color: #122331;
+    height: auto;
+    color: white;
+    padding: 10px;
+    cursor : pointer;
+}
+
+.Build .Synergy{
+    margin: 10px;
+}
+
+.Build button{
+    float: right;
+    background: #3A6F9C;
+    color: white;
+    border: 0px;
+    cursor : pointer;
+}
+
