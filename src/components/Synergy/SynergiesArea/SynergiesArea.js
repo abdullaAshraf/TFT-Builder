@@ -9,6 +9,11 @@ function compare(a, b) {
         na++;
     while (b.count >= b.stages[nb] && nb < b.stages.length - 1)
         nb++;
+
+    if(na === 0 && nb > 0)
+        return 1;
+    if(nb === 0 && na > 0)
+        return -1;
     if (a.stages.length - na < b.stages.length - nb) {
         return -1;
     }

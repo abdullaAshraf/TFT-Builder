@@ -55,7 +55,7 @@ class TFTBuilder extends Component {
 
             let champ = this.mergeChampions(prevState.champions, name, 1, []);
             if (champ != null) {
-                let champ2 = this.mergeChampions(prevState.champions, name, 2, champ.items);
+                let champ2 = this.mergeChampions(prevState.champions, name, 2, [...champ.items]);
                 if (champ2 != null)
                     champ = champ2;
             } else if (emptyCell != null) {
